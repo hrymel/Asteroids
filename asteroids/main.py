@@ -13,6 +13,8 @@ def main():
     score = 0
     score_increment = 10
     player_lives = 5
+    
+    
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
@@ -43,6 +45,9 @@ def main():
 
         updatable.update(dt)
 
+        # reduce hit timer for invulnerability period
+        player.player_hit_timer -= dt 
+
         for asteroid in asteroids:
             for shot in shots:
                 if asteroid.doesCollide(shot):
@@ -52,6 +57,12 @@ def main():
                     score += score_increment
 
             if player.doesCollide(asteroid):
+                if player.player_hit_timer <= 0:
+                    player_lives-= 1
+                    player.player_hit_timer = 2
+                    player.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+            if player_lives == 0:
                 sys.exit(f"Game over! Your score was {score}")
                 return
 
@@ -63,6 +74,9 @@ def main():
         # Draw the score to the screen
         score_text = font.render(f'Score: {score}', True, (255, 255, 255))
         screen.blit(score_text, (10, 10))
+        # draw player lives to screen
+        player_lives_text = font.render(f'Lives: {player_lives}', True, (255, 255, 255))
+        screen.blit(player_lives_text, (10, 35))
 
         pygame.display.flip()
 
