@@ -12,6 +12,7 @@ def main():
     pygame.font.init()
     score = 0
     score_increment = 10
+    player_lives = 5
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
